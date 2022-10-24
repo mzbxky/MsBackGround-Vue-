@@ -1,10 +1,9 @@
 <template>
 <div>
   <div >
-<!--    class="U_head"-->
   <el-form :model="query" ref="queryForm" :inline="true" label-width="85px" style="padding-top: 15px;">
     <el-row v-if="selectShow">
-      <!--    用户、所属媒体-->
+      <!--  用户、所属媒体-->
       <el-form-item label="所属用户" prop="mediaName" v-if="!optionUser">
       <el-select v-model="beLongUser" placeholder="所属用户" size="small" style="width: 150px;" clearable @change="selectMedia" :disabled="optionUser">
         <el-option
@@ -247,7 +246,6 @@
   </el-dialog>
     <pagination v-show="total>0" :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList" style="bottom: 13px;right: 10px"/>
 </div>
-
 </template>
 
 <script>
@@ -259,7 +257,6 @@ export default {
   name: "control",
   dicts: ['open_type','second_type'],
   data(){
-
     return{
       tableHeight: "",//表格高度
       insertRule:{
@@ -633,7 +630,6 @@ export default {
       }
     },
     //添加
-    //
     insert(){
       //拼接
       for (let i in this.channelLogo){
@@ -706,13 +702,6 @@ export default {
     //搜索
     handleQuery(){
       this.getList();
-    },
-    //重置
-    resetQuery(){
-      this.query = {}
-      this.query.pageSize = 20
-      this.query.pageNum = 1
-      this.getList()
     },
     /** 导出按钮操作 */
     handleExport(row) {
