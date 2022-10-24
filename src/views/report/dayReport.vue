@@ -76,7 +76,7 @@
       <el-checkbox v-model="pangolinQuery.byAppName" @change="getDataReportList('数据维度')">应用</el-checkbox>
       <el-checkbox v-model="pangolinQuery.byDate" @change="getDataReportList('数据维度')">时间</el-checkbox>
     </div>
-<!--      优量汇-->
+<!--      优量汇   -->
       <div style="margin-left: 30px;margin-top: 20px;margin-bottom: 10px" v-if="pageShow">
         <span style="font-size: 15px;color: rgb(96,98,102)">数据维度：</span>
         <el-checkbox v-model="mySqlQuery.byMediumName" @change="getList('数据维度')">媒体名称</el-checkbox>
@@ -88,7 +88,7 @@
             <el-table-column prop="medium_name" label="媒体名称" sortable show-overflow-tooltip width="200px" v-if="this.mySqlQuery.byMediumName === true || this.mySqlQuery.mediaName !== '' && this.mySqlQuery.mediaName !== null">
               <template slot-scope="scope">
                 <el-tooltip :content=scope.row.medium_name placement="top">
-                  <div @lclick="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.medium_name}}</div>
+                  <div @click="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.medium_name}}</div>
                 </el-tooltip>
               </template>
             </el-table-column>
@@ -119,7 +119,7 @@
         <template slot-scope="scope">
           <el-tooltip :content=scope.row.app_name placement="top">
             <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
-            <div @lclick="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.app_name}}</div>
+            <div @click="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.app_name}}</div>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -147,9 +147,9 @@
 
 <script>
 import echarts from "echarts";
-import {dayData,selectDayDataList,selectMediaName,selectPlacementName,overview} from "@/report/dayReport";
+import {dayData,overview} from "@/report/dayReport";
 import {selectPlatformName} from "@/report/platform";
-import {getReportForMySQL,selectAppName,selectSlotName,getDataReport,selectCodeBit,selectSumList} from "@/report/dataReportSecond";
+import {getDataReport,selectSumList} from "@/report/dataReportSecond";
 
 export default {
   name: "dayReport",
@@ -418,6 +418,7 @@ export default {
       indicator2:'预估收益',
     };
   },
+  //生命周期重构表格
   updated() {
     this.$nextTick(() => {
       this.$refs.table.doLayout()
@@ -488,24 +489,24 @@ export default {
           return;
         }
         if (this.mySqlQuery.platformList === "优量汇"){
-          if (this.mySqlQuery.byMediumName === false && this.mySqlQuery.byDate === false){
+          if (this.mySqlQuery.byMediumName === false && this.mySqlQuery.byDate === false || this.mySqlQuery.byDate === true){
             if (index === 4 || index === 6 || index === 9){
               sums[index] = 'N/A'
               return;
             }
-          }else {
+          }else if(this.mySqlQuery.byMediumName === true && this.mySqlQuery.byDate === false){
             if (index === 5 || index === 10 || index === 7){
               sums[index] = 'N/A'
               return;
             }
           }
         }else {
-          if (this.pangolinQuery.byAppName === true || this.pangolinQuery.byDate=== true){
+          if (this.pangolinQuery.byAppName === true && this.pangolinQuery.byDate=== true || this.pangolinQuery.byAppName === true){
             if (index === 1 || index === 5){
               sums[index] = 'N/A'
               return;
             }
-          }else {
+          }else if (this.pangolinQuery.byAppName === false && this.pangolinQuery.byDate === false || this.pangolinQuery.byDate === true){
             if (index === 4){
               sums[index] = 'N/A'
               return;

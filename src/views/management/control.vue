@@ -45,7 +45,6 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="small"  @click="handleQuery" >搜索</el-button>
-        <el-button icon="el-icon-refresh" size="small" @click="resetQuery">重置</el-button>
       </el-form-item>
       <el-button size="small" @click="cType" style="background-color: #71e2a3;color: white" icon="el-icon-edit" :disabled="ids.length === 0" v-hasPermi="['control:openOrOff']">广告开关</el-button>
       <el-button size="small" @click="changeTypeTwo" style="background-color: #57c3c2;color: white" icon="el-icon-edit" :disabled="ids.length === 0" v-hasPermi="['control:secondary']">二次确认</el-button>
@@ -254,7 +253,7 @@
 <script>
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import {selectAdvertisingList,deleteAdvertisingInfo,changeType,insert,insertChannel,changeSecondConfirm,updateAdvertisingList,selectMediaByUser,selectChannel} from "@/management/advertising";
-import {deleteControlInfo, selectList, selectUser, userInfo} from "@/management/mediaList"
+import {selectList, selectUser, userInfo} from "@/management/mediaList"
 import { checkPermi, checkRole } from "@/utils/permission"; // 权限判断函数
 export default {
   name: "control",
@@ -637,7 +636,7 @@ export default {
     //添加
     //
     insert(){
-      //拼接   
+      //拼接
       for (let i in this.channelLogo){
         if (this.insetForm.channel == null || this.insetForm.channel === ''){
           this.insetForm.channel = this.channelLogo[i]

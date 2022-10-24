@@ -46,7 +46,6 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="small"  @click="handleQuery" >搜索</el-button>
-        <el-button icon="el-icon-refresh" size="small" @click="resetQuery">重置</el-button>
       </el-form-item>
       <el-button @click="handleDelete" icon="el-icon-delete" :disabled="deleteId.length === 0" style="margin-left: 20px" v-hasPermi="['management:delete']">
         <span>批量删除</span>
@@ -56,7 +55,6 @@
     </el-row>
   </el-form>
   </div>
-
 <div>
     <el-table v-loading="loading" :data="managementList" @selection-change="handleSelectionChange" border style="padding-bottom: 50px" :height="tableHeight" >
     <el-table-column v-show="false" type="selection" width="55" align="center"/>
