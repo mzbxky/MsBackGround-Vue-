@@ -88,7 +88,7 @@
             <el-table-column prop="medium_name" label="媒体名称" sortable show-overflow-tooltip width="200px" v-if="this.mySqlQuery.byMediumName === true || this.mySqlQuery.mediaName !== '' && this.mySqlQuery.mediaName !== null">
               <template slot-scope="scope">
                 <el-tooltip :content=scope.row.medium_name placement="top">
-                  <div @dblclick="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.medium_name}}</div>
+                  <div @lclick="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.medium_name}}</div>
                 </el-tooltip>
               </template>
             </el-table-column>
@@ -119,7 +119,7 @@
         <template slot-scope="scope">
           <el-tooltip :content=scope.row.app_name placement="top">
             <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
-            <div @dblclick="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.app_name}}</div>
+            <div @lclick="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.app_name}}</div>
           </el-tooltip>
         </template>
       </el-table-column>
