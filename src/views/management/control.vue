@@ -379,7 +379,6 @@ export default {
     };
   },
   created() {
-    // this.getNowTime()
     this.getTableHeight()
     this.userInfo()
     this.selectMedia()
