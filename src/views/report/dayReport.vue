@@ -85,13 +85,6 @@
 <!--    优量汇列表-->
         <div>
           <el-table v-loading="loading" :data="dayData" border style="padding-bottom: 50px" max-height="700" v-if="pageShow" :height="tableHeight" :summary-method="getSummaries" show-summary ref="table">
-            <el-table-column prop="medium_name" label="媒体名称" sortable show-overflow-tooltip width="200px" v-if="this.mySqlQuery.byMediumName === true || this.mySqlQuery.mediaName !== '' && this.mySqlQuery.mediaName !== null">
-              <template slot-scope="scope">
-                <el-tooltip :content=scope.row.medium_name placement="top">
-                  <div @click="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.medium_name}}</div>
-                </el-tooltip>
-              </template>
-            </el-table-column>
             <el-table-column prop="date" label="日期" sortable  v-if="this.mySqlQuery.byDate === true || this.mySqlQuery.byMediumName === false" width="200px">
               <template slot-scope="scope">
                 {{scope.row.date}}
@@ -99,6 +92,13 @@
             </el-table-column>
             <el-table-column prop="date" label="日期" sortable  v-if="this.mySqlQuery.byDate === false && this.mySqlQuery.byMediumName === true" width="200px">
               {{this.value1[0]+"~"+this.value1[1]}}
+            </el-table-column>
+            <el-table-column prop="medium_name" label="媒体名称" sortable show-overflow-tooltip width="200px" v-if="this.mySqlQuery.byMediumName === true || this.mySqlQuery.mediaName !== '' && this.mySqlQuery.mediaName !== null">
+              <template slot-scope="scope">
+                <el-tooltip :content=scope.row.medium_name placement="top">
+                  <div @click="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.medium_name}}</div>
+                </el-tooltip>
+              </template>
             </el-table-column>
             <el-table-column prop="ecpm" label="单价" sortable></el-table-column>
             <el-table-column prop="revenue" label="收入" sortable></el-table-column>
@@ -115,14 +115,6 @@
 <!--穿山甲列表-->
         <div>
     <el-table v-loading="loading" :data="pangolinList" border style="padding-bottom: 50px" max-height="700" v-if="!pageShow" :height="tableHeight" :summary-method="getSummaries" show-summary ref="table">
-      <el-table-column prop="app_name" label="应用名称" sortable v-if="this.pangolinQuery.appName !=='' || this.pangolinQuery.byAppName === true">
-        <template slot-scope="scope">
-          <el-tooltip :content=scope.row.app_name placement="top">
-            <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
-            <div @click="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.app_name}}</div>
-          </el-tooltip>
-        </template>
-      </el-table-column>
       <el-table-column prop="date" label="日期" sortable v-if="this.pangolinQuery.byDate === true || this.pangolinQuery.byAppName ===false">
         <template slot-scope="scope">
           {{scope.row.date}}
@@ -130,6 +122,14 @@
       </el-table-column>
       <el-table-column prop="date" label="日期" sortable v-if="this.pangolinQuery.byDate === false && this.pangolinQuery.byAppName ===true">
         {{this.value1[0]+"~"+this.value1[1]}}
+      </el-table-column>
+      <el-table-column prop="app_name" label="应用名称" sortable v-if="this.pangolinQuery.appName !=='' || this.pangolinQuery.byAppName === true">
+        <template slot-scope="scope">
+          <el-tooltip :content=scope.row.app_name placement="top">
+            <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
+            <div @click="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.app_name}}</div>
+          </el-tooltip>
+        </template>
       </el-table-column>
       <el-table-column prop="ecpm" label="预估ecpm" sortable></el-table-column>
       <el-table-column prop="revenue" label="预估收益" sortable></el-table-column>
@@ -479,7 +479,7 @@ export default {
         this.tableHeight = window.innerHeight - tableH;
       }
     },
-    //总和数据行
+    //总和数据行  
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
@@ -491,24 +491,27 @@ export default {
         if (this.mySqlQuery.platformList === "优量汇"){
           if (this.mySqlQuery.byMediumName === false && this.mySqlQuery.byDate === false || this.mySqlQuery.byDate === true){
             if (index === 4 || index === 6 || index === 9){
-              sums[index] = 'N/A'
+              sums[index] = ''
               return;
             }
           }else if(this.mySqlQuery.byMediumName === true && this.mySqlQuery.byDate === false){
             if (index === 5 || index === 10 || index === 7){
-              sums[index] = 'N/A'
+              sums[index] = ''
+              if (index === 2){
+                sums[index] = sums[index].toFixed(2)
+              }
               return;
             }
           }
         }else {
           if (this.pangolinQuery.byAppName === true && this.pangolinQuery.byDate=== true || this.pangolinQuery.byAppName === true){
             if (index === 1 || index === 5){
-              sums[index] = 'N/A'
+              sums[index] = ''
               return;
             }
           }else if (this.pangolinQuery.byAppName === false && this.pangolinQuery.byDate === false || this.pangolinQuery.byDate === true){
             if (index === 4){
-              sums[index] = 'N/A'
+              sums[index] = ''
               return;
             }
           }
@@ -525,7 +528,7 @@ export default {
           }, 0);
           sums[index] += '';
         } else {
-          sums[index] = 'N/A';
+          sums[index] = '';
         }
       });
       return sums;
@@ -596,16 +599,18 @@ export default {
         this.retcount = []
         this.codeBitName = []
         this.appName = []
-        for (let i = 0;i<res.data.list.length;i++){
-          this.pangolinDate[i] = res.data.list[i].date
-          this.revenueList[i] = res.data.list[i].revenue
-          this.clickRateList[i] = res.data.list[i].click_rate
-          this.clickCount[i] = res.data.list[i].click
-          this.ecpm[i] = res.data.list[i].ecpm
-          this.reqcount[i] = res.data.list[i].request
-          this.retcount[i] = res.data.list[i].response
+        let i = 0;
+        for (let n = res.data.list.length-1;n>=0;n--){
+          this.pangolinDate[i] = res.data.list[n].date
+          this.revenueList[i] = res.data.list[n].revenue
+          this.clickRateList[i] = res.data.list[n].click_rate
+          this.clickCount[i] = res.data.list[n].click
+          this.ecpm[i] = res.data.list[n].ecpm
+          this.reqcount[i] = res.data.list[n].request
+          this.retcount[i] = res.data.list[n].response
           //应用名称
-          this.appName[i] = res.data.list[i].app_name
+          this.appName[i] = res.data.list[n].app_name
+          i++
         }
         this.option.xAxis.data = this.pangolinDate
         this.controlChart()
@@ -720,25 +725,27 @@ export default {
       this.pictureMySqlQuery.endDate = this.mySqlQuery.endDate
       overview(this.pictureMySqlQuery).then(res=>{
         //赋值
-        for (let i = 0;i<res.data.list.length;i++){
+        let i = 0
+        for (let n = res.data.list.length-1;n>=0;n--){
           //日期
-          this.data_data[i] = res.data.list[i].date
+          this.data_data[i] = res.data.list[n].date
           //点击率
-          this.click_rate_data[i] = res.data.list[i].click_rate
+          this.click_rate_data[i] = res.data.list[n].click_rate
           //曝光率
-          this.ad_exposure_rate_data[i] = res.data.list[i].ad_exposure_rate
+          this.ad_exposure_rate_data[i] = res.data.list[n].ad_exposure_rate
           //填充率
-          this.fill_data[i] = res.data.list[i].ad_fill_rate
+          this.fill_data[i] = res.data.list[n].ad_fill_rate
           //点击量
-          this.click_data[i] = res.data.list[i].click
+          this.click_data[i] = res.data.list[n].click
           //曝光量
-          this.pv_data[i] = res.data.list[i].pv
+          this.pv_data[i] = res.data.list[n].pv
           //收入
-          this.revenue_data[i] = res.data.list[i].revenue
+          this.revenue_data[i] = res.data.list[n].revenue
           //请求量
-          this.ad_request_count_data[i] = res.data.list[i].ad_request_count
+          this.ad_request_count_data[i] = res.data.list[n].ad_request_count
           //返回量
-          this.ad_return_count_data[i] = res.data.list[i].ad_return_count
+          this.ad_return_count_data[i] = res.data.list[n].ad_return_count
+          i++
         }
         this.changeTu()
       })
