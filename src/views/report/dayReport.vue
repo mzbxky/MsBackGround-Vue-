@@ -479,7 +479,7 @@ export default {
         this.tableHeight = window.innerHeight - tableH;
       }
     },
-    //总和数据行  
+    //总和数据行
     getSummaries(param) {
       const { columns, data } = param;
       const sums = [];
@@ -488,49 +488,58 @@ export default {
           sums[index] = '合计';
           return;
         }
-        if (this.mySqlQuery.platformList === "优量汇"){
-          if (this.mySqlQuery.byMediumName === false && this.mySqlQuery.byDate === false || this.mySqlQuery.byDate === true){
-            if (index === 4 || index === 6 || index === 9){
-              sums[index] = ''
-              return;
-            }
-          }else if(this.mySqlQuery.byMediumName === true && this.mySqlQuery.byDate === false){
-            if (index === 5 || index === 10 || index === 7){
-              sums[index] = ''
-              if (index === 2){
-                sums[index] = sums[index].toFixed(2)
-              }
-              return;
-            }
-          }
-        }else {
-          if (this.pangolinQuery.byAppName === true && this.pangolinQuery.byDate=== true || this.pangolinQuery.byAppName === true){
-            if (index === 1 || index === 5){
-              sums[index] = ''
-              return;
-            }
-          }else if (this.pangolinQuery.byAppName === false && this.pangolinQuery.byDate === false || this.pangolinQuery.byDate === true){
-            if (index === 4){
-              sums[index] = ''
-              return;
-            }
-          }
-        }
         const values = data.map(item => Number(item[column.property]));
         if (!values.every(value => isNaN(value))) {
+          let totalCount = 0;
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr);
             if (!isNaN(value)) {
+              totalCount++;
               return prev + curr;
             } else {
               return prev;
             }
           }, 0);
+          if (this.mySqlQuery.platformList === "优量汇"){
+            if (this.mySqlQuery.byMediumName === false && this.mySqlQuery.byDate === false || this.mySqlQuery.byDate === true){
+              if (index === 4 || index === 6 || index === 9){
+                sums[index] = ''
+                return;
+              }
+            }else if(this.mySqlQuery.byMediumName === true && this.mySqlQuery.byDate === false){
+              if (index === 2){
+                sums[index] = sums[index].toFixed(2)
+              }
+              if (index === 5 || index === 10 || index === 7){
+                sums[index] = ''
+              }
+              return;
+            }
+          }else {
+            if (this.pangolinQuery.byAppName === true && this.pangolinQuery.byDate=== true || this.pangolinQuery.byAppName === true){
+              if (index === 1 || index === 5){
+                sums[index] = ''
+              }
+              if (index === 2){
+                sums[index] = (sums[index] / totalCount).toFixed(2)
+              }
+              if (index === 3){
+                sums[index] = sums[index].toFixed(2)
+              }
+              return;
+            }else if (this.pangolinQuery.byAppName === false && this.pangolinQuery.byDate === false || this.pangolinQuery.byDate === true){
+              if (index === 4){
+                sums[index] = ''
+                return;
+              }
+            }
+          }
           sums[index] += '';
         } else {
           sums[index] = '';
         }
       });
+
       return sums;
     },
     serviceDate(){
