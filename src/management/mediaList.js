@@ -33,10 +33,10 @@ export function insertInfo(query) {
   })
 }
 
-//媒体信息添加
 export function selectUser() {
   return request({
     url: '/management/selectUser',
+    async:false,
     method: 'get',
     params: null
   })
