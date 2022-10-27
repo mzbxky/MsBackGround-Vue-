@@ -35,7 +35,7 @@
       <el-table-column prop="tincome" label="平台t收益" sortable></el-table-column>
       <el-table-column prop="total" label="总计" sortable></el-table-column>
     </el-table>
-    <pagination v-show="total2>0" :total="total2" :page.sync="query2.pageNum" :limit.sync="query2.pageSize" @pagination="getListUser" style="bottom: 5px;right: 10px"/>
+    <pagination v-show="total2>0" :total="total2" :page.sync="query2.pageNum" :limit.sync="query2.pageSize" @pagination="getListUser" style="bottom: 10px;right: 10px"/>
   </div>
   </div>
 </template>
@@ -88,7 +88,7 @@ export default {
         }]
       },
       value1:[],
-      //当前登录是否是admin
+      //当前登录是否是admin   
       nowUser:false,
     }
   },
@@ -106,7 +106,8 @@ export default {
     };
   },
   created() {
-this.selectUserArray()
+    this.selectUserArray()
+    this.getTableHeight()
   },
   methods:{
     //计算table高度(动态设置table高度)
