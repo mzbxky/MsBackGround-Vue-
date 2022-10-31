@@ -1,8 +1,8 @@
 <template>
 <div>
   <div>
-<el-form :inline="true" label-width="85px" style="margin-top: 10px">
-    <el-form-item label="用户" prop="userName" v-if="this.nowUser" >
+<el-form :inline="true" label-width="85px" style="margin-top: 10px;margin-left:-35px;min-width: 1800px">
+    <el-form-item label="用户" prop="userName" v-if="this.nowUser">
       <el-select v-model="query.userId" placeholder="请选择" clearable size="small" style="width: 240px" @change="getList">
         <el-option
           v-for="dict in userArray"
@@ -70,7 +70,7 @@ export default {
   name: "summary",
   data(){
     return {
-      tableHeight: "",//表格高度
+      tableHeight: "",//表格高度   
       //获取数据条数
       total:0,
       //获取到的数据

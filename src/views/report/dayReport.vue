@@ -2,7 +2,7 @@
   <div>
     <div>
   <el-card style="margin-bottom: 10px">
-  <el-form :inline="true" label-width="85px" style="padding-top: 15px;margin-left: 0">
+  <el-form :inline="true" label-width="85px" style="padding-top: 15px;margin-left: 0;min-width: 1800px">
     <el-form-item label="平台切换" prop="mediaName" >
       <el-select v-model="mySqlQuery.platformList" placeholder="媒体" size="small" style="width: 200px" @change="serviceShow">
         <el-option

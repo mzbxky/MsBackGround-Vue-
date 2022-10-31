@@ -1,8 +1,8 @@
 <template>
   <div>
     <div>
-      <el-form :inline="true" label-width="85px" style="margin-top: 10px">
-        <el-form-item label="用户" prop="userName" v-if="this.nowUser">
+      <el-form :inline="true" label-width="85px" style="margin-top: 10px;min-width: 1800px">
+        <el-form-item label="用户" prop="userName" v-if="this.nowUser" style="margin-left:-35px">
           <el-select v-model="query2.userId" placeholder="请选择" clearable size="small" style="width: 240px" @change="getListUser">
             <el-option
               v-for="dict in userArray"
@@ -88,7 +88,7 @@ export default {
         }]
       },
       value1:[],
-      //当前登录是否是admin   
+      //当前登录是否是admin
       nowUser:false,
     }
   },

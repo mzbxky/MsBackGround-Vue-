@@ -1,8 +1,7 @@
 <template>
 <div>
-<!--  class="U_head"-->
-  <div>
-  <el-form :model="query" ref="queryForm" :inline="true" label-width="85px" style="padding-top: 15px;margin-left: -30px">
+  <div style="display: flex;justify-content:flex-start;">
+  <el-form :model="query" ref="queryForm" :inline="true" label-width="100px" style="padding-top: 15px;margin-left: -30px;min-width: 1800px">
     <el-row>
 <!--      <el-form-item label="日期" prop="NowTime">-->
 <!--        <el-date-picker-->
@@ -25,7 +24,6 @@
         </el-select>
       </el-form-item>
       <el-form-item label="媒体" prop="pck">
-<!--        <el-input v-model="query.name" placeholder="请输入媒体" clearable size="small" style="width: 240px" @change="getList"/> -->
         <el-select v-model="query.name" placeholder="媒体" clearable size="small" style="width: 150px" @change="getList">
           <el-option
             v-for="dict in beLongUserMedia"
@@ -124,20 +122,10 @@
       <template slot-scope="scope">
         <el-button size="mini" type="text"  @click="updateClick(scope.row)" icon="el-icon-edit">修改</el-button>
         <el-button size="mini" type="text"  @click="deleteInfo(scope.row)" icon="el-icon-delete">删除</el-button>
-<!--        <el-button-->
-<!--          type="warning"-->
-<!--          plain-->
-<!--          icon="el-icon-download"-->
-<!--          size="mini"-->
-<!--          @click="handleExport(scope.row)"-->
-<!--          v-hasPermi="['management:export']"-->
-<!--        >导出</el-button>   -->
       </template>
     </el-table-column>
   </el-table>
-<!--  <div class="page" style="padding-right: 200px;bottom: 55px">-->
     <pagination v-show="total>0" :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList" style="bottom: 13px;right: 10px"/>
-<!--  </div>-->
 </div>
 
 <!--  媒体新增-->
@@ -500,7 +488,6 @@ export default {
       this.$set(this.query, "NowTime", defaultDate);
     },
     // 全部删除
-    //
     handleDelete(row) {
         this.$confirm('此操作将永久删除所选文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -537,19 +524,6 @@ export default {
         this.loading = false
   })
 },
-    //修改
-    /*
-      this.info.id = this.updateInfo[0].id
-      this.info.name = this.updateInfo[0].name
-      this.info.pck = this.updateInfo[0].pkg
-      this.info.exp = this.updateInfo[0].exp
-      this.info.state = this.updateInfo[0].state
-      this.info.cid = this.updateInfo[0].cid
-      this.info.tid = this.updateInfo[0].tid
-      this.info.username = this.updateInfo[0].username
-      this.info.version = this.updateInfo[0].version
-      this.info.userId = this.updateInfo[0].userId
-    */
     updateClick(row){
       this.query.id = row.id
       selectList(this.query).then(res=>{
@@ -648,10 +622,8 @@ export default {
           this.getList()
         })
       }
-
     },
     //搜索
-    //
     handleQuery(){
       this.getList();
     },
@@ -672,14 +644,6 @@ export default {
     //修改页面关闭
     closeUpdate(){
       this.updateShow =false
-    },
-    //重置
-    resetQuery(){
-      //把搜索条件置空
-      this.query = {}
-      this.query.pageNum = 1
-      this.query.pageSize = 20
-      this.getList()
     },
 }}
 </script>

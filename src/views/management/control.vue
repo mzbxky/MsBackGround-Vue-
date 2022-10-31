@@ -1,7 +1,7 @@
 <template>
 <div>
   <div >
-  <el-form :model="query" ref="queryForm" :inline="true" label-width="85px" style="padding-top: 15px;">
+  <el-form :model="query" ref="queryForm" :inline="true" label-width="85px" style="padding-top: 15px;min-width: 1800px">
     <el-row v-if="selectShow">
       <!--  用户、所属媒体-->
       <el-form-item label="所属用户" prop="mediaName" v-if="!optionUser">
