@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div >
+  <div style="height: 70px">
   <el-form :model="query" ref="queryForm" :inline="true" label-width="85px" style="padding-top: 15px;min-width: 1800px">
     <el-row v-if="selectShow">
       <!--  用户、所属媒体-->

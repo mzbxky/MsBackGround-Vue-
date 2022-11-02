@@ -1,7 +1,7 @@
 <template>
 <div>
-  <div>
-<el-form :inline="true" label-width="85px" style="margin-top: 10px;margin-left:-35px;min-width: 1800px">
+  <div style="height: 55px">
+<el-form :inline="true" label-width="85px" style="margin-top: 15px;margin-left:-25px;min-width: 1800px;">
     <el-form-item label="用户" prop="userName" v-if="this.nowUser">
       <el-select v-model="query.userId" placeholder="请选择" clearable size="small" style="width: 240px" @change="getList">
         <el-option
@@ -34,27 +34,27 @@
 </el-form>
   </div>
   <div>
-    <el-table v-loading="loading" :data="list" border style="padding-bottom: 50px" :height="tableHeight" >
+    <el-table v-loading="loading" :data="list" border style="padding-bottom: 50px" :height="tableHeight" :summary-method="getSummaries" show-summary ref="table">
       <el-table-column prop="time" label="日期" sortable></el-table-column>
       <el-table-column prop="nickName" label="用户"></el-table-column>
       <el-table-column prop="appName" label="应用">
         <template slot-scope="scope">
-          <el-tooltip :content=scope.row.appName placement="top">
+<!--          <el-tooltip :content=scope.row.appName placement="top">-->
             <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
             <div @click="handleCopy(scope.row.appName)" style="cursor:pointer" class="copy">{{scope.row.appName}}</div>
-          </el-tooltip>
+<!--          </el-tooltip>-->
         </template>
       </el-table-column>
       <el-table-column prop="pkg" label="包名">
         <template slot-scope="scope">
-          <el-tooltip :content=scope.row.pkg placement="top">
+<!--          <el-tooltip :content=scope.row.pkg placement="top">-->
             <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
             <div @click="handleCopy(scope.row.pkg)" style="cursor:pointer" class="copy">{{scope.row.pkg}}</div>
-          </el-tooltip>
+<!--          </el-tooltip>-->
         </template>
       </el-table-column>
-      <el-table-column prop="cincome" label="平台c收益" sortable></el-table-column>
-      <el-table-column prop="tincome" label="平台t收益" sortable></el-table-column>
+      <el-table-column prop="cincome" label="穿山甲" sortable></el-table-column>
+      <el-table-column prop="tincome" label="腾讯" sortable></el-table-column>
       <el-table-column prop="total" label="总计" sortable></el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="query.pageNum" :limit.sync="query.pageSize" @pagination="getList" style="bottom: 10px;right: 10px"/>
@@ -70,7 +70,7 @@ export default {
   name: "summary",
   data(){
     return {
-      tableHeight: "",//表格高度   
+      tableHeight: "",//表格高度
       //获取数据条数
       total:0,
       //获取到的数据
@@ -120,6 +120,12 @@ export default {
       value1:[],
     }
   },
+  //生命周期重构表格
+  updated() {
+    this.$nextTick(() => {
+      this.$refs.table.doLayout()
+    })
+  },
   mounted() {
     //挂载window.onresize事件(动态设置table高度)
     let _this = this;
@@ -138,6 +144,36 @@ export default {
     this.selectUserArray()
   },
   methods:{
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '合计';
+          return;
+        }
+        const values = data.map(item => Number(item[column.property]));
+        if (!values.every(value => isNaN(value))) {
+          let totalCount = 0;
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              totalCount++;
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+          if (index === 4 || index === 5 || index === 6){
+            sums[index] = sums[index].toFixed(2)
+          }
+          sums[index] += '';
+        } else {
+          sums[index] = '';
+        }
+      });
+      return sums;
+    },
     //计算table高度(动态设置table高度)
     getTableHeight() {
       let tableH = 210; //距离页面下方的高度
@@ -214,5 +250,15 @@ export default {
 /*鼠标悬停改变字体颜色*/
 .copy:hover{
   color: #1c84c6;
+}
+/* /deep/ 为深度操作符，可以穿透到子组件 */
+/deep/ .el-table {
+  display: flex;
+  flex-direction: column;
+}
+
+/* order默认值为0，只需将表体order置为1即可移到最后，这样合计行就上移到表体上方 */
+/deep/ .el-table__body-wrapper {
+  order: 1;
 }
 </style>

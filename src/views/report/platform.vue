@@ -1,6 +1,6 @@
 <template>
-<div>
-  <el-form :model="query" ref="queryForm" :inline="true" label-width="85px" style="padding-top: 15px">
+<div style="height: 60px;">
+  <el-form :model="query" ref="queryForm" :inline="true" label-width="85px" style="padding-top: 20px">
     <el-form-item label="平台名称" prop="name">
       <el-input v-model="query.name" placeholder="请输入平台名称" clearable size="small" style="width: 240px" @input="getList"/>
     </el-form-item>

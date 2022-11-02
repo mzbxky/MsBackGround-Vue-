@@ -1,8 +1,8 @@
 <template>
   <div>
     <div>
-  <el-card style="margin-bottom: 10px">
-  <el-form :inline="true" label-width="85px" style="padding-top: 15px;margin-left: 0;min-width: 1800px">
+  <el-card style="margin-bottom: 10px;height: 70px">
+  <el-form :inline="true" label-width="85px" style="padding-top: -10px;margin-left: -20px;min-width: 1800px">
     <el-form-item label="平台切换" prop="mediaName" >
       <el-select v-model="mySqlQuery.platformList" placeholder="媒体" size="small" style="width: 200px" @change="serviceShow">
         <el-option
@@ -63,7 +63,7 @@
   </el-form>
   </el-card>
   <el-card style="margin-bottom: 10px">
-  <div class="proCharts" ref='charts' >
+  <div class="proCharts" ref='charts'>
   </div>
   </el-card>
       </div>
@@ -102,7 +102,7 @@
             </el-table-column>
             <el-table-column prop="ecpm" label="单价" sortable></el-table-column>
             <el-table-column prop="revenue" label="收入" sortable></el-table-column>
-            <el-table-column prop="pv" label="曝光量" sortable></el-table-column>
+            <el-table-column prop="pv" label="展示量" sortable></el-table-column>
             <el-table-column prop="ad_exposure_rate" label="曝光率" sortable></el-table-column>
             <el-table-column prop="click" label="点击量" sortable></el-table-column>
             <el-table-column prop="click_rate" label="点击率" sortable></el-table-column>
@@ -110,11 +110,11 @@
             <el-table-column prop="ad_return_count" label="返回量" sortable></el-table-column>
             <el-table-column prop="ad_fill_rate" label="填充率" sortable></el-table-column>
           </el-table>
-          <pagination v-show="total>0" :total="total" :page.sync="mySqlQuery.pageNum" :limit.sync="mySqlQuery.pageSize" @pagination="getList" v-if="pageShow" style="bottom: 13px;right: 10px"/>
+          <pagination v-show="total>0" :total="total" :page.sync="mySqlQuery.pageNum" :limit.sync="mySqlQuery.pageSize" @pagination="getList" v-if="pageShow" style="bottom: 3px;right: 10px"/>
         </div>
 <!--穿山甲列表-->
         <div>
-    <el-table v-loading="loading" :data="pangolinList" border style="padding-bottom: 50px" max-height="700" v-if="!pageShow" :height="tableHeight" :summary-method="getSummaries" show-summary ref="table">
+    <el-table v-loading="loading" :data="pangolinList" border style="padding-bottom: 50px" v-if="!pageShow" :height="tableHeight" :summary-method="getSummaries" show-summary ref="table">
       <el-table-column prop="date" label="日期" sortable v-if="this.pangolinQuery.byDate === true || this.pangolinQuery.byAppName ===false">
         <template slot-scope="scope">
           {{scope.row.date}}
@@ -125,20 +125,19 @@
       </el-table-column>
       <el-table-column prop="app_name" label="应用名称" sortable v-if="this.pangolinQuery.appName !=='' || this.pangolinQuery.byAppName === true">
         <template slot-scope="scope">
-          <el-tooltip :content=scope.row.app_name placement="top">
             <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
             <div @click="handleCopy(scope.row)" style="cursor:pointer" class="copy">{{scope.row.app_name}}</div>
-          </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column prop="ecpm" label="预估ecpm" sortable></el-table-column>
       <el-table-column prop="revenue" label="预估收益" sortable></el-table-column>
+      <el-table-column prop="show" label="展示量" sortable></el-table-column>
       <el-table-column prop="click" label="点击量" sortable></el-table-column>
       <el-table-column prop="click_rate" label="点击率" sortable></el-table-column>
       <el-table-column prop="request" label="广告请求量" sortable></el-table-column>
       <el-table-column prop="response" label="广告返回量" sortable></el-table-column>
+      <el-table-column prop="ecpm" label="预估ecpm" sortable></el-table-column>
     </el-table>
-          <pagination v-show="pangolinTotal>0" :total="pangolinTotal" :page.sync="pangolinQuery.pageNum" :limit.sync="pangolinQuery.pageSize" @pagination="getDataReportList" v-if="!pageShow" style="bottom: 13px;right: 10px"/>
+          <pagination v-show="pangolinTotal>0" :total="pangolinTotal" :page.sync="pangolinQuery.pageNum" :limit.sync="pangolinQuery.pageSize" @pagination="getDataReportList" v-if="!pageShow" style="bottom: 3px;right: 10px"/>
         </div>
       </el-card>
     </div>
@@ -159,7 +158,7 @@ export default {
 //------------------------------------报表相关------------------------------------
       option:{
         //线的颜色
-        color:['rgb(18,170,156)','rgb(91,174,35)',"rgb(249,114,61)"],
+        color:['rgb(64,158,255)','rgb(91,174,35)',"rgb(249,114,61)"],
         title: {
           text: ''
         },
@@ -238,7 +237,7 @@ export default {
             type: 'line',
             data: [],
             lineStyle:{
-              color:'rgb(18,170,156)'  //线的颜色
+              color:'rgb(64,158,255)'  //线的颜色
             },
             smooth : true
           }
@@ -449,7 +448,7 @@ export default {
   methods:{
     // 复制
     handleCopy(row) {
-      if (this.mySqlQuery.platformList === "优量汇"){
+      if (this.mySqlQuery.platformList === "腾讯"){
         this.copyData = row.medium_name
       }else {
         this.copyData = row.app_name
@@ -476,7 +475,7 @@ export default {
       if (tableHeightDetil <= 300) {
         this.tableHeight = 300;
       } else {
-        this.tableHeight = window.innerHeight - tableH;
+        this.tableHeight = window.innerHeight - tableH+20;
       }
     },
     //总和数据行
@@ -500,7 +499,7 @@ export default {
               return prev;
             }
           }, 0);
-          if (this.mySqlQuery.platformList === "优量汇"){
+          if (this.mySqlQuery.platformList === "腾讯"){
             if (this.mySqlQuery.byMediumName === false && this.mySqlQuery.byDate === false || this.mySqlQuery.byDate === true){
               if (index === 4 || index === 6 || index === 9){
                 sums[index] = ''
@@ -517,10 +516,13 @@ export default {
             }
           }else {
             if (this.pangolinQuery.byAppName === true && this.pangolinQuery.byDate=== true || this.pangolinQuery.byAppName === true){
-              if (index === 1 || index === 5){
+              if (index === 1){
                 sums[index] = ''
               }
-              if (index === 2){
+              if (index === 5){
+                sums[index] = (sums[index] / totalCount).toFixed(2)
+              }
+              if (index === 2 || index === 8){
                 sums[index] = (sums[index] / totalCount).toFixed(2)
               }
               if (index === 3){
@@ -529,9 +531,12 @@ export default {
               return;
             }else if (this.pangolinQuery.byAppName === false && this.pangolinQuery.byDate === false || this.pangolinQuery.byDate === true){
               if (index === 4){
-                sums[index] = ''
-                return;
+                sums[index] = (sums[index] / totalCount).toFixed(2)
               }
+              if (index === 7 || index === 1){
+                sums[index] = (sums[index] / totalCount).toFixed(2)
+              }
+              return;
             }
           }
           sums[index] += '';
@@ -553,7 +558,7 @@ export default {
     },
     //控制页面展示
     serviceShow(){
-      if (this.mySqlQuery.platformList === "优量汇"){
+      if (this.mySqlQuery.platformList === "腾讯"){
         this.pageShow = true
         //优量汇第一次显示直接显示总览
         this.getList("firstShow")
@@ -880,6 +885,16 @@ export default {
 /*鼠标悬停改变字体颜色*/
 .copy:hover{
   color: #1c84c6;
+}
+/* /deep/ 为深度操作符，可以穿透到子组件 */
+/deep/ .el-table {
+  display: flex;
+  flex-direction: column;
+}
+
+/* order默认值为0，只需将表体order置为1即可移到最后，这样合计行就上移到表体上方 */
+/deep/ .el-table__body-wrapper {
+  order: 1;
 }
 
 </style>

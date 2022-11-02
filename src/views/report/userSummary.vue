@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div>
-      <el-form :inline="true" label-width="85px" style="margin-top: 10px;min-width: 1800px">
-        <el-form-item label="用户" prop="userName" v-if="this.nowUser" style="margin-left:-35px">
+    <div style="height: 55px">
+      <el-form :inline="true" label-width="85px" style="margin-top: 15px;margin-left:5px;min-width: 1800px">
+        <el-form-item label="用户" prop="userName" v-if="this.nowUser" style="margin-left:-30px">
           <el-select v-model="query2.userId" placeholder="请选择" clearable size="small" style="width: 240px" @change="getListUser">
             <el-option
               v-for="dict in userArray"
@@ -28,11 +28,11 @@
       </el-form>
     </div>
   <div>
-    <el-table v-loading="loading" :data="listUser" border style="padding-bottom: 50px" :height="tableHeight">
+    <el-table v-loading="loading" :data="listUser" border style="padding-bottom: 50px" :height="tableHeight" :summary-method="getSummaries" show-summary ref="table">
       <el-table-column prop="time" label="日期" sortable></el-table-column>
       <el-table-column prop="nickName" label="用户"></el-table-column>
-      <el-table-column prop="cincome" label="平台c收益" sortable></el-table-column>
-      <el-table-column prop="tincome" label="平台t收益" sortable></el-table-column>
+      <el-table-column prop="cincome" label="穿山甲" sortable></el-table-column>
+      <el-table-column prop="tincome" label="腾讯" sortable></el-table-column>
       <el-table-column prop="total" label="总计" sortable></el-table-column>
     </el-table>
     <pagination v-show="total2>0" :total="total2" :page.sync="query2.pageNum" :limit.sync="query2.pageSize" @pagination="getListUser" style="bottom: 10px;right: 10px"/>
@@ -92,6 +92,12 @@ export default {
       nowUser:false,
     }
   },
+  //生命周期重构表格
+  updated() {
+    this.$nextTick(() => {
+      this.$refs.table.doLayout()
+    })
+  },
   mounted() {
     //挂载window.onresize事件(动态设置table高度)
     let _this = this;
@@ -110,6 +116,40 @@ export default {
     this.getTableHeight()
   },
   methods:{
+    getSummaries(param) {
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '合计';
+          return;
+        }
+        const values = data.map(item => Number(item[column.property]));
+        if (!values.every(value => isNaN(value))) {
+          let totalCount = 0;
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr);
+            if (!isNaN(value)) {
+              totalCount++;
+              return prev + curr;
+            } else {
+              return prev;
+            }
+          }, 0);
+          if (index === 1){
+            sums[index] = ''
+          }
+          if (index === 4 || index === 2 || index === 3){
+            sums[index] = sums[index].toFixed(2)
+            return;
+          }
+          sums[index] += '';
+        } else {
+          sums[index] = '';
+        }
+      });
+      return sums;
+    },
     //计算table高度(动态设置table高度)
     getTableHeight() {
       let tableH = 210; //距离页面下方的高度
@@ -140,6 +180,7 @@ export default {
     },
     //查询所属用户
     selectUserArray(){
+      this.loading = true
       selectUser().then(res =>{
         for (let i in res){
           this.userArray[i] = res[i]
@@ -157,11 +198,21 @@ export default {
           }
         }
       })
+      this.loading = false
     },
   }
 }
 </script>
 
 <style scoped>
+/* /deep/ 为深度操作符，可以穿透到子组件 */
+/deep/ .el-table {
+  display: flex;
+  flex-direction: column;
+}
 
+/* order默认值为0，只需将表体order置为1即可移到最后，这样合计行就上移到表体上方 */
+/deep/ .el-table__body-wrapper {
+  order: 1;
+}
 </style>

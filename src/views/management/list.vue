@@ -1,7 +1,7 @@
 <template>
 <div>
-  <div style="display: flex;justify-content:flex-start;">
-  <el-form :model="query" ref="queryForm" :inline="true" label-width="100px" style="padding-top: 15px;margin-left: -30px;min-width: 1800px">
+  <div style="height: 70px">
+  <el-form :inline="true" label-width="100px" style="padding-top: 15px;margin-left: -30px;min-width: 1800px">
     <el-row>
 <!--      <el-form-item label="日期" prop="NowTime">-->
 <!--        <el-date-picker-->
