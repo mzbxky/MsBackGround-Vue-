@@ -1,24 +1,24 @@
 <template>
 <div>
   <div style="height: 55px">
-<el-form :inline="true" label-width="85px" style="margin-top: 15px;margin-left:-25px;min-width: 1800px;">
-    <el-form-item label="用户" prop="userName" v-if="this.nowUser">
-      <el-select v-model="query.userId" placeholder="请选择" clearable size="small" style="width: 240px" @change="getList">
-        <el-option
-          v-for="dict in userArray"
-          :key="dict.userId"
-          :label="dict.nickName"
-          :value="dict.userId"
-        />
-      </el-select>
-    </el-form-item>
-  <el-form-item label="应用名称">
-    <el-input v-model="query.appName" placeholder="请输入应用名称" clearable size="small" style="width: 200px" @input="getList"/>
-  </el-form-item>
-  <el-form-item label="包名">
-    <el-input v-model="query.pkg" placeholder="请输入包名" clearable size="small" style="width: 200px" @input="getList"/>
-  </el-form-item>
-  <el-form-item label="日期" >
+    <el-form :inline="true" label-width="85px" style="margin-top: 15px;margin-left:-25px;min-width: 1800px;">
+      <el-form-item label="用户" prop="userName" v-if="this.nowUser">
+        <el-select v-model="query.userId" placeholder="请选择" clearable size="small" style="width: 240px" @change="getList">
+          <el-option
+            v-for="dict in userArray"
+            :key="dict.userId"
+            :label="dict.nickName"
+            :value="dict.userId"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="应用名称">
+        <el-input v-model="query.appName" placeholder="请输入应用名称" clearable size="small" style="width: 200px" @input="getList"/>
+      </el-form-item>
+      <el-form-item label="包名">
+        <el-input v-model="query.pkg" placeholder="请输入包名" clearable size="small" style="width: 200px" @input="getList"/>
+      </el-form-item>
+      <el-form-item label="日期" >
     <el-date-picker
       v-model="value1"
       type="daterange"
@@ -31,14 +31,15 @@
       :picker-options="pickerOptions">
     </el-date-picker>
   </el-form-item>
-</el-form>
+    </el-form>
   </div>
   <div>
-    <el-table v-loading="loading" :data="list" border style="padding-bottom: 50px" :height="tableHeight" :summary-method="getSummaries" show-summary ref="table">
+    <el-table v-loading="loading" :data="list" border style="padding-bottom: 50px" :height="tableHeight" :summary-method="getSummaries" show-summary  ref="table">
       <el-table-column prop="time" label="日期" sortable></el-table-column>
       <el-table-column prop="nickName" label="用户"></el-table-column>
       <el-table-column prop="appName" label="应用">
         <template slot-scope="scope">
+<!--          提示框-->
 <!--          <el-tooltip :content=scope.row.appName placement="top">-->
             <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
             <div @click="handleCopy(scope.row.appName)" style="cursor:pointer" class="copy">{{scope.row.appName}}</div>
@@ -47,10 +48,7 @@
       </el-table-column>
       <el-table-column prop="pkg" label="包名">
         <template slot-scope="scope">
-<!--          <el-tooltip :content=scope.row.pkg placement="top">-->
-            <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
             <div @click="handleCopy(scope.row.pkg)" style="cursor:pointer" class="copy">{{scope.row.pkg}}</div>
-<!--          </el-tooltip>-->
         </template>
       </el-table-column>
       <el-table-column prop="cincome" label="穿山甲" sortable></el-table-column>
@@ -186,7 +184,7 @@ export default {
     },
     // 复制
     handleCopy(row) {
-        this.copyData = row
+      this.copyData = row
       this.copy(this.copyData)
     },
     copy(data) {
@@ -251,14 +249,14 @@ export default {
 .copy:hover{
   color: #1c84c6;
 }
-/* /deep/ 为深度操作符，可以穿透到子组件 */
-/deep/ .el-table {
-  display: flex;
-  flex-direction: column;
-}
+/*!* /deep/ 为深度操作符，可以穿透到子组件 *!*/
+/*/deep/ .el-table {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*}*/
 
-/* order默认值为0，只需将表体order置为1即可移到最后，这样合计行就上移到表体上方 */
-/deep/ .el-table__body-wrapper {
-  order: 1;
-}
+/*!* order默认值为0，只需将表体order置为1即可移到最后，这样合计行就上移到表体上方 *!*/
+/*/deep/ .el-table__body-wrapper {*/
+/*  order: 1;*/
+/*}*/
 </style>

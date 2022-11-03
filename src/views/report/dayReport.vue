@@ -500,9 +500,15 @@ export default {
             }
           }, 0);
           if (this.mySqlQuery.platformList === "腾讯"){
+            if (this.mySqlQuery.byMediumName === true && this.mySqlQuery.byDate === true){
+              if (index === 5 || index === 10 || index === 7){
+                sums[index] = (sums[index] / totalCount).toFixed(2)
+              }
+              return;
+            }
             if (this.mySqlQuery.byMediumName === false && this.mySqlQuery.byDate === false || this.mySqlQuery.byDate === true){
               if (index === 4 || index === 6 || index === 9){
-                sums[index] = ''
+                sums[index] = (sums[index] / totalCount).toFixed(2)
                 return;
               }
             }else if(this.mySqlQuery.byMediumName === true && this.mySqlQuery.byDate === false){
@@ -510,7 +516,7 @@ export default {
                 sums[index] = sums[index].toFixed(2)
               }
               if (index === 5 || index === 10 || index === 7){
-                sums[index] = ''
+                sums[index] = (sums[index] / totalCount).toFixed(2)
               }
               return;
             }

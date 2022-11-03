@@ -112,8 +112,8 @@ export default {
     };
   },
   created() {
-    this.selectUserArray()
     this.getTableHeight()
+    this.selectUserArray()
   },
   methods:{
     getSummaries(param) {
@@ -205,14 +205,14 @@ export default {
 </script>
 
 <style scoped>
-/* /deep/ 为深度操作符，可以穿透到子组件 */
-/deep/ .el-table {
-  display: flex;
-  flex-direction: column;
-}
+/*!* /deep/ 为深度操作符，可以穿透到子组件 *!*/
+/*/deep/ .el-table {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*}*/
 
-/* order默认值为0，只需将表体order置为1即可移到最后，这样合计行就上移到表体上方 */
-/deep/ .el-table__body-wrapper {
-  order: 1;
-}
+/*!* order默认值为0，只需将表体order置为1即可移到最后，这样合计行就上移到表体上方 *!*/
+/*/deep/ .el-table__body-wrapper {*/
+/*  order: 1;*/
+/*}*/
 </style>
