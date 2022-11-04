@@ -20,7 +20,6 @@
         <el-option
           v-for="dict in beLongUserMedia"
           :key="dict.name"
-          :label="dict.name"
           :value="dict.name"
         >
           <span style="float: left">{{dict.name}}</span>
@@ -129,7 +128,7 @@
     <el-form :model="insetForm" ref="tableData" :inline="true" @submit.native.prevent key="1" label-width="auto">
       <el-row>
         <el-form-item label="所属用户:" prop="mediaName" v-if="!optionUser">
-          <el-select v-model="insert_user" placeholder="所属用户" size="small" style="width: 260px;" @change="selectMediaInInsert" :disabled="optionUser">
+          <el-select v-model="insert_user" placeholder="所属用户" size="small" style="width: 260px;" @change="selectMedia" :disabled="optionUser">
             <el-option
               v-for="dict in userArray"
               :key="dict.userId"
@@ -292,7 +291,7 @@ export default {
       //搜索框是否显示
       selectShow:true,
       //所属用户
-      beLongUser:110,
+      beLongUser:null,
       //所属用户下的媒体
       beLongUserMedia:[],
       // 查询参数
@@ -429,7 +428,7 @@ export default {
             this.getList()
             this.selectMedia()
             this.optionUser = true
-          }else if (res[0].roleKey === "admin"){
+          }else if (res[0].roleKey === "admin" || res[0].roleKey === "development"){
             this.beLongUser = null
             this.getList()
             this.selectMedia()
@@ -463,11 +462,11 @@ export default {
         });
       });
     },
-    selectMediaInInsert(){
-      selectMediaByUser(this.insert_user).then(res=>{
-        this.beLongUserMedia = res
-      })
-    },
+    // selectMediaInInsert(){
+    //   selectMediaByUser(this.insert_user).then(res=>{
+    //     this.beLongUserMedia = res
+    //   })
+    // },
     //查询所属用户
     selectUserArray(){
       selectUser().then(res =>{

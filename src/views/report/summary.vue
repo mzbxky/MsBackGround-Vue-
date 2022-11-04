@@ -165,6 +165,9 @@ export default {
           if (index === 4 || index === 5 || index === 6){
             sums[index] = sums[index].toFixed(2)
           }
+          if (index === 1){
+            sums[index] = '';
+          }
           sums[index] += '';
         } else {
           sums[index] = '';
